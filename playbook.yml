@@ -1,0 +1,27 @@
+---
+- hosts: '{{ hosts }}'
+  remote_user: '{{ user }}'
+  sudo: yes
+  vars_files:
+    - vars/vars.yml
+  
+  pre_tasks:
+  - name: apt-get update
+    apt: update_cache=yes
+    
+  - name: AWS | install python-pip
+    action: apt pkg={{ item }} state=installed
+    with_items:
+    - python-pip
+
+  - name: AWS | install awscli
+    pip: name=awscli
+
+  - name: AWS | Assures dir exists
+    file: path="~/.aws" state=directory
+
+
+  - name: AWS | create credentials
+    template:
+      src: aws_credentials.tpl
+      dest: "~/.aws/credentials"
