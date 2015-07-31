@@ -20,7 +20,6 @@
   - name: AWS | Assures dir exists
     file: path="~/.aws" state=directory
 
-
   - name: AWS | create credentials
     template:
       src: aws_credentials.tpl
